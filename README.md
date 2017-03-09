@@ -2,6 +2,6 @@
 
 Features
 - own payment status
-- optinal create order on failed payment
+- optional create order on failed payment
 - debug payment process
 - better logs with own db table
