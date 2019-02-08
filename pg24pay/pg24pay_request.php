@@ -19,7 +19,7 @@ class Pg24payRequest {
     
     public function getServiceDomain(){
         if ($this->signGenerator->debug==1)
-            return "https://doxxsl-staging.24-pay.eu";
+            return "https://test.24-pay.eu";
         else
             return "https://admin.24-pay.eu";
     }
