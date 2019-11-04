@@ -33,7 +33,7 @@ class Pg24payPaymentModuleFrontController extends ModuleFrontController
         }
         
         if (Configuration::get('PAY24_DEBUG')==1){
-            $action_url = "https://doxxsl-staging.24-pay.eu/pay_gate/paygt";
+            $action_url = "https://test.24-pay.eu/pay_gate/paygt";
         }
         else{
             $action_url = "https://admin.24-pay.eu/pay_gate/paygt";
