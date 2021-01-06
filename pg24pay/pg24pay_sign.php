@@ -40,15 +40,24 @@ class Pg24paySign {
     }
     
     public function getSign($plaintext){
-        if ($this->_paddingType == 'PKCS7'){
-            $data = $this->AddPadding($this->getData($plaintext));
+        if ( PHP_VERSION_ID >= 50303 && extension_loaded( 'openssl' ) ) {
+            if ($this->_paddingType == 'PKCS7'){
+                $data = $this->AddPadding($this->getData($plaintext));
+            }
+
+            mcrypt_generic_init($this->_cipher, $this->getHexKey(), $this->iv);
+            $result = mcrypt_generic($this->_cipher, $data);
+            mcrypt_generic_deinit($this->_cipher);
+
+            return strtoupper(substr(bin2hex($result),0,32));
         }
- 
-        mcrypt_generic_init($this->_cipher, $this->getHexKey(), $this->iv);
-        $result = mcrypt_generic($this->_cipher, $data);
-        mcrypt_generic_deinit($this->_cipher);
-      
-        return strtoupper(substr(bin2hex($result),0,32));
+        else{            
+            $hash = hash("sha1", $plaintext, true);
+
+            $crypted = openssl_encrypt( $hash, 'AES-256-CBC', $this->getHexKey(), 1, $this->iv );
+         
+            return strtoupper(bin2hex(substr($crypted, 0, 16)));
+        }
     }
     
     /* SIGN SUPPORT METHODS */
